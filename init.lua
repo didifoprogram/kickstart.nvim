@@ -167,9 +167,8 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- diable recording
 vim.api.nvim_set_keymap('n', 'q', '<Nop>', { noremap = true, silent = true })
 
--- Toggle line comment keybind remap
-vim.keymap.set('n', '<C-/>', 'gcc', { remap = true })
-vim.keymap.set('x', '<C-/>', 'gc', { remap = true })
+-- Toggle line comment keybind Ctrl + /
+vim.api.nvim_set_keymap('n', '<C-_>', 'gcc', { desc = 'ctrl / to comment line' })
 
 -- make ctrl s save the current file
 vim.api.nvim_set_keymap('n', '<C-s>', ':w<Cr>', { desc = 'Ctrl s to save' })
