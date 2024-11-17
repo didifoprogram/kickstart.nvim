@@ -8,6 +8,9 @@ vim.api.nvim_set_keymap('n', 'q', '<Nop>', { noremap = true, silent = true })
 
 -- Toggle line comment keybind Ctrl + /
 vim.api.nvim_set_keymap('n', '<C-_>', 'gcc', { desc = 'ctrl / to comment line' })
+vim.api.nvim_set_keymap('n', '<C-/>', 'gcc', { desc = 'ctrl / to comment line' })
+vim.api.nvim_set_keymap('v', '<C-/>', 'gcc', { desc = 'ctrl / to comment line' })
+vim.api.nvim_set_keymap('x', '<C-/>', 'gcc', { desc = 'ctrl / to comment line' })
 
 -- make ctrl s save the current file
 vim.api.nvim_set_keymap('n', '<C-s>', ':w<Cr>', { desc = 'Ctrl s to save' })
