@@ -19,4 +19,5 @@ return {
   require 'custom.plugins.oil',
   require 'custom.plugins.rustacean',
   require 'custom.plugins.crates',
+  require 'custom.plugins.lualine',
 }
