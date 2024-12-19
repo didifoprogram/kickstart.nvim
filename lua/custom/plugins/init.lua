@@ -20,4 +20,5 @@ return {
   require 'custom.plugins.rustacean',
   require 'custom.plugins.crates',
   require 'custom.plugins.lualine',
+  require 'custom.plugins.todo-comments',
 }
