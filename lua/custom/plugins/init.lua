@@ -17,6 +17,7 @@ vim.api.nvim_set_keymap('n', '<C-s>', ':w<Cr>', { desc = 'Ctrl s to save' })
 
 return {
   require 'custom.plugins.oil',
+  require 'custom.plugins.tiny_line',
   require 'custom.plugins.rustacean',
   require 'custom.plugins.crates',
   require 'custom.plugins.lualine',
