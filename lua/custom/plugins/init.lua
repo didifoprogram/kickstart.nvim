@@ -28,4 +28,6 @@ return {
   require 'custom.plugins.crates',
   require 'custom.plugins.lualine',
   require 'custom.plugins.todo-comments',
+  -- require 'custom.plugins.illuminate',
+  require 'custom.plugins.snacks',
 }
