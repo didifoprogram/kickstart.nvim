@@ -280,7 +280,7 @@ require('lazy').setup({
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
-    ft = 'lua',
+    -- ft = 'lua',
     opts = {
       library = {
         -- Load luvit types when the `vim.uv` word is found
@@ -288,7 +288,9 @@ require('lazy').setup({
       },
     },
   },
+
   { 'Bilal2453/luvit-meta', lazy = true },
+
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
@@ -589,7 +591,6 @@ require('lazy').setup({
     -- without having to redefine it
     opts_extend = { 'sources.default' },
   },
-  'folke/lazydev.nvim',
 
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
