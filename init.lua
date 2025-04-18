@@ -249,33 +249,33 @@ require('lazy').setup({
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
   --
-  {
-    'ibhagwan/fzf-lua',
-    -- optional for icon support
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      -- calling `setup` is optional for customization
-      require('fzf-lua').setup {
-        fzf_colors = true,
-        lsp = {
-          jump_to_single_result = true,
-          ignore_current_line = true,
-        },
-      }
-
-      local fzf = require 'fzf-lua'
-      vim.keymap.set('n', '<leader>sh', fzf.helptags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', fzf.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', fzf.files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', fzf.builtin, { desc = '[S]earch [S]elect FZF' })
-      vim.keymap.set('n', '<leader>sw', fzf.grep_cword, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', fzf.live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader>sd', fzf.diagnostics_document, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>sr', fzf.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', fzf.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', fzf.buffers, { desc = '[ ] Find existing buffers' })
-    end,
-  },
+  -- {
+  --   'ibhagwan/fzf-lua',
+  --   -- optional for icon support
+  --   dependencies = { 'nvim-tree/nvim-web-devicons' },
+  --   config = function()
+  --     -- calling `setup` is optional for customization
+  --     require('fzf-lua').setup {
+  --       fzf_colors = true,
+  --       lsp = {
+  --         jump1 = true,
+  --         ignore_current_line = true,
+  --       },
+  --     }
+  --
+  --     local fzf = require 'fzf-lua'
+  --     vim.keymap.set('n', '<leader>sh', fzf.helptags, { desc = '[S]earch [H]elp' })
+  --     vim.keymap.set('n', '<leader>sk', fzf.keymaps, { desc = '[S]earch [K]eymaps' })
+  --     vim.keymap.set('n', '<leader>sf', fzf.files, { desc = '[S]earch [F]iles' })
+  --     vim.keymap.set('n', '<leader>ss', fzf.builtin, { desc = '[S]earch [S]elect FZF' })
+  --     vim.keymap.set('n', '<leader>sw', fzf.grep_cword, { desc = '[S]earch current [W]ord' })
+  --     vim.keymap.set('n', '<leader>sg', fzf.live_grep, { desc = 'Grep' })
+  --     vim.keymap.set('n', '<leader>sd', fzf.diagnostics_document, { desc = 'Search Diagnostics' })
+  --     vim.keymap.set('n', '<leader>sr', fzf.resume, { desc = 'Search Resume' })
+  --     vim.keymap.set('n', '<leader>s.', fzf.oldfiles, { desc = '[S]earch Old Files ("." for repeat)' })
+  --     vim.keymap.set('n', '<leader><leader>', fzf.buffers, { desc = 'Buffers' })
+  --   end,
+  -- },
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
@@ -321,43 +321,43 @@ require('lazy').setup({
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          local fzf = require 'fzf-lua'
+          -- local fzf = require 'fzf-lua'
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', fzf.lsp_definitions, '[G]oto [D]efinition')
+          -- map('gd', fzf.lsp_definitions, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
-          map('gr', fzf.lsp_references, '[G]oto [R]eferences')
+          -- map('gr', fzf.lsp_references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', fzf.lsp_implementations, '[G]oto [I]mplementation')
+          -- map('gI', fzf.lsp_implementations, '[G]oto [I]mplementation')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', fzf.lsp_typedefs, 'Type [D]efinition')
+          -- map('<leader>D', fzf.lsp_typedefs, 'Type [D]efinition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', fzf.lsp_document_symbols, '[D]ocument [S]ymbols')
+          -- map('<leader>ds', fzf.lsp_document_symbols, '[D]ocument [S]ymbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', fzf.lsp_workspace_symbols, '[W]orkspace [S]ymbols')
+          -- map('<leader>ws', fzf.lsp_workspace_symbols, '[W]orkspace [S]ymbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          -- map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+          -- map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
-          map('gD', fzf.lsp_declarations, '[G]oto [D]eclaration')
+          -- map('gD', fzf.lsp_declarations, '[G]oto [D]eclaration')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
