@@ -36,13 +36,6 @@ return {
         desc = 'Smart Find Files',
       },
       {
-        '<leader>,',
-        function()
-          Snacks.picker.buffers()
-        end,
-        desc = 'Buffers',
-      },
-      {
         '<leader>/',
         function()
           Snacks.picker.grep()
@@ -422,13 +415,6 @@ return {
         desc = 'Select Scratch Buffer',
       },
       {
-        '<leader>n',
-        function()
-          Snacks.notifier.show_history()
-        end,
-        desc = 'Notification History',
-      },
-      {
         '<leader>bd',
         function()
           Snacks.bufdelete()
@@ -464,13 +450,13 @@ return {
         end,
         desc = 'Dismiss All Notifications',
       },
-      --      {
-      --       '<c-/>',
-      --     function()
-      --     Snacks.terminal()
-      --  end,
-      --       desc = 'Toggle Terminal',
-      --   },
+      {
+        'F1',
+        function()
+          Snacks.terminal()
+        end,
+        desc = 'Toggle Terminal',
+      },
       {
         '<c-_>',
         function()
