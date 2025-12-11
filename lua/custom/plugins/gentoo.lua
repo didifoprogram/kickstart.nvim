@@ -1,5 +1,5 @@
 return {
-  {
-    'https://github.com/gentoo/gentoo-syntax',
-  },
+  -- {
+  --   'https://github.com/gentoo/gentoo-syntax',
+  -- },
 }

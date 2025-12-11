@@ -10,7 +10,7 @@ return {
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
-      keymap = { preset = 'default', ['<Tab>'] = { 'select_and_accept' } },
+      keymap = { preset = 'default', ['<Tab>'] = { 'accept' } },
 
       -- experimental signature help support
       signature = { enabled = true, window = { border = 'rounded' } },
@@ -52,14 +52,6 @@ return {
                 end,
               },
             },
-          },
-        },
-      },
-      cmdline = {
-        enabled = true,
-        completion = {
-          menu = {
-            auto_show = true,
           },
         },
       },

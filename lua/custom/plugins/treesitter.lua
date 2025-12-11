@@ -1,6 +1,6 @@
 -- Start treesitter
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'go', 'lua', 'bash', 'html', 'luadoc', 'vim', 'vimdoc', 'rust', 'markdown' },
+  pattern = { 'go', 'lua', 'bash', 'html', 'rust', 'markdown' },
   callback = function()
     vim.treesitter.start()
   end,
