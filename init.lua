@@ -110,7 +110,7 @@ require('lazy').setup({
 
   require 'kickstart.plugins.debug',
 
-  { import = 'custom.plugins' },
+  { import = 'plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table hich will use the
