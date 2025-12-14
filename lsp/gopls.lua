@@ -8,6 +8,7 @@ vim.lsp.config.gopls = {
         compositeLiteralFields = true,
         constantValues = true,
         parameterNames = true,
+        assignVariableTypes = true,
       },
     },
   },

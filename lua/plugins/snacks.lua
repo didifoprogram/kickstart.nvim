@@ -18,6 +18,15 @@ return {
       },
       picker = { enabled = true },
       quickfile = { enabled = true },
+      terminal = {
+        enabled = true,
+        win = {
+          style = 'terminal',
+          position = 'float',
+          height = 0.9,
+          width = 0.9,
+        },
+      },
       scope = { enabled = true },
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
@@ -36,6 +45,13 @@ return {
           vim.lsp.buf.rename()
         end,
         desc = 'Rename Lsp Symbol',
+      },
+      {
+        '<leader>ca',
+        function()
+          vim.lsp.buf.code_action()
+        end,
+        desc = 'Lsp Code Action',
       },
       {
         '<leader><space>',
