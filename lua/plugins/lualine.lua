@@ -5,10 +5,12 @@ return {
     config = function()
       require('lualine').setup {
         options = {
-          icons_enabled = true,
+          icons_enabled = false,
           theme = 'auto',
-          component_separators = { left = '', right = '' },
-          section_separators = { left = '', right = '' },
+          -- component_separators = { left = '', right = '' },
+          -- section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
           disabled_filetypes = {
             statusline = {},
             winbar = {},
@@ -18,9 +20,22 @@ return {
           always_show_tabline = true,
           globalstatus = false,
           refresh = {
-            statusline = 100,
-            tabline = 100,
-            winbar = 100,
+            statusline = 1000,
+            tabline = 1000,
+            winbar = 1000,
+            refres_time = 16,
+            events = {
+              'WinEnter',
+              'BufEnter',
+              'BufWritePost',
+              'SessionLoadPost',
+              'FileChangedShellPost',
+              'VimResized',
+              'Filetype',
+              'CursorMoved',
+              'CursorMovedI',
+              'ModeChanged',
+            },
           },
         },
         sections = {
