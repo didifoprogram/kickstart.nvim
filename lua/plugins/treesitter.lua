@@ -17,15 +17,19 @@ return {
   config = function()
     local ts = require 'nvim-treesitter'
 
-    -- State tracking for async parser loading
-    local parsers_loaded = {}
-    local parsers_pending = {}
-    local parsers_failed = {}
+    -- Track buffers waiting for parser installation: { lang = { [buf] = true, ... } }
+    local waiting_buffers = {}
+    -- Track languages currently being installed to avoid duplicate install tasks
+    local installing_langs = {}
 
-    local ns = vim.api.nvim_create_namespace 'treesitter.async'
+    local group = vim.api.nvim_create_augroup('TreesitterSetup', { clear = true })
 
-    -- Helper to start highlighting and indentation
-    local function start(buf, lang)
+    -- Enable treesitter for a buffer
+    local function enable_treesitter(buf, lang)
+      if not vim.api.nvim_buf_is_valid(buf) then
+        return false
+      end
+
       local ok = pcall(vim.treesitter.start, buf, lang)
       if ok then
         vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
@@ -35,94 +39,100 @@ return {
 
     -- Install core parsers after lazy.nvim finishes loading all plugins
     vim.api.nvim_create_autocmd('User', {
+      group = group,
       pattern = 'LazyDone',
       once = true,
+      desc = 'Install core treesitter parsers',
       callback = function()
         ts.install({
           'bash',
-          'git_config',
-          'git_rebase',
-          'gitcommit',
-          'gitignore',
-          'html',
-          'javascript',
-          'json',
           'lua',
           'luadoc',
-          'make',
           'markdown',
           'markdown_inline',
           'regex',
-          'svelte',
-          'toml',
-          'typescript',
           'vim',
           'vimdoc',
-          'xml',
           'go',
           'rust',
+          'html',
+          'proto',
         }, {
-          max_jobs = 4,
+          max_jobs = 8,
         })
       end,
     })
 
-    -- Decoration provider for async parser loading
-    vim.api.nvim_set_decoration_provider(ns, {
-      on_start = vim.schedule_wrap(function()
-        if #parsers_pending == 0 then
-          return false
-        end
-        for _, data in ipairs(parsers_pending) do
-          if vim.api.nvim_buf_is_valid(data.buf) then
-            if start(data.buf, data.lang) then
-              parsers_loaded[data.lang] = true
-            else
-              parsers_failed[data.lang] = true
-            end
-          end
-        end
-        parsers_pending = {}
-      end),
-    })
-
-    local group = vim.api.nvim_create_augroup('TreesitterSetup', { clear = true })
-
     local ignore_filetypes = {
-      'checkhealth',
-      'lazy',
-      'mason',
-      'snacks_dashboard',
-      'snacks_notif',
-      'snacks_win',
+      checkhealth = true,
+      lazy = true,
+      mason = true,
+      qf = true,
+      snacks_dashboard = true,
+      snacks_notif = true,
+      snacks_win = true,
+      toggleterm = true,
     }
 
     -- Auto-install parsers and enable highlighting on FileType
     vim.api.nvim_create_autocmd('FileType', {
       group = group,
-      desc = 'Enable treesitter highlighting and indentation (non-blocking)',
+      desc = 'Enable treesitter highlighting and indentation',
       callback = function(event)
-        if vim.tbl_contains(ignore_filetypes, event.match) then
+        if ignore_filetypes[event.match] then
           return
         end
 
         local lang = vim.treesitter.language.get_lang(event.match) or event.match
         local buf = event.buf
 
-        if parsers_failed[lang] then
-          return
-        end
+        if not enable_treesitter(buf, lang) then
+          -- Parser not available, queue buffer (set handles duplicates)
+          waiting_buffers[lang] = waiting_buffers[lang] or {}
+          waiting_buffers[lang][buf] = true
 
-        if parsers_loaded[lang] then
-          -- Parser already loaded, start immediately (fast path)
-          start(buf, lang)
-        else
-          -- Queue for async loading
-          table.insert(parsers_pending, { buf = buf, lang = lang })
-        end
+          -- Only start install if not already in progress
+          if not installing_langs[lang] then
+            installing_langs[lang] = true
+            local task = ts.install { lang }
 
-        -- Auto-install missing parsers (async, no-op if already installed)
-        ts.install { lang }
+            -- Register callback for when installation completes
+            if task and task.await then
+              task:await(function()
+                vim.schedule(function()
+                  installing_langs[lang] = nil
+
+                  -- Enable treesitter on all waiting buffers for this language
+                  local buffers = waiting_buffers[lang]
+                  if buffers then
+                    for b in pairs(buffers) do
+                      enable_treesitter(b, lang)
+                    end
+                    waiting_buffers[lang] = nil
+                  end
+                end)
+              end)
+            else
+              -- Fallback: clear state if task doesn't support await
+              installing_langs[lang] = nil
+              waiting_buffers[lang] = nil
+            end
+          end
+        end
+      end,
+    })
+
+    -- Clean up waiting buffers when buffer is deleted
+    vim.api.nvim_create_autocmd('BufDelete', {
+      group = group,
+      desc = 'Clean up treesitter waiting buffers',
+      callback = function(event)
+        for lang, buffers in pairs(waiting_buffers) do
+          buffers[event.buf] = nil
+          if next(buffers) == nil then
+            waiting_buffers[lang] = nil
+          end
+        end
       end,
     })
   end,

@@ -64,6 +64,7 @@ require('lazy').setup {
 
   require 'kickstart.plugins.debug',
   { import = 'plugins' },
+  { import = 'plugins/themes' },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

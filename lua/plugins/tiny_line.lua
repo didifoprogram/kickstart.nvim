@@ -3,6 +3,11 @@ return {
     'rachartier/tiny-inline-diagnostic.nvim',
     event = 'VeryLazy',
     priority = 1000,
+    options = {
+      multilines = {
+        enabled = true,
+      },
+    },
     config = function()
       require('tiny-inline-diagnostic').setup()
       vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics

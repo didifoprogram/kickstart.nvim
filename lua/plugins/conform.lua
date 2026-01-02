@@ -21,6 +21,7 @@ return {
     formatters_by_ft = {
       lua = { 'stylua' },
       go = { 'gofumpt' },
+      proto = { 'buf' },
     },
     -- Set default options
     default_format_opts = {

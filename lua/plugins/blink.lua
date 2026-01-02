@@ -18,37 +18,39 @@ return {
       completion = {
         ghost_text = { enabled = false },
         documentation = {
-          -- window = {
-          --   border = 'single',
-          -- },
+          treesitter_highlighting = true,
+          window = {
+            border = vim.g.borderStyle,
+            min_width = 15,
+            max_width = 45,
+            max_height = 10,
+          },
           auto_show = true,
-          auto_show_delay_ms = 500,
+          auto_show_delay_ms = 250,
         },
         menu = {
-          border = 'rounded',
+          border = 'single',
           draw = {
             gap = 1,
             columns = {
-              { 'label', 'label_description', gap = 1 },
-              { 'kind_icon', 'kind', gap = 1 },
+              -- { 'label', 'label_description', gap = 1 },
+              -- { 'kind', 'kind_icon', gap = 1 },
+              { 'kind_icon', 'label', gap = 1 },
+              { 'kind' },
             },
             components = {
+              label = {
+                text = function(ctx)
+                  return require('colorful-menu').blink_components_text(ctx)
+                end,
+                highlight = function(ctx)
+                  return require('colorful-menu').blink_components_highlight(ctx)
+                end,
+              },
               kind_icon = {
                 text = function(ctx)
                   local kind_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
                   return kind_icon
-                end,
-                -- (optional) use highlights from mini.icons
-                highlight = function(ctx)
-                  local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
-                  return hl
-                end,
-              },
-              kind = {
-                -- (optional) use highlights from mini.icons
-                highlight = function(ctx)
-                  local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
-                  return hl
                 end,
               },
             },
@@ -60,7 +62,7 @@ return {
         -- Sets the fallback highlight groups to nvim-cmp's highlight groups
         -- Useful for when your theme doesn't support blink.cmp
         -- will be removed in a future release
-        -- use_nvim_cmp_as_default = true,
+        use_nvim_cmp_as_default = false,
         -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = 'mono',
@@ -71,6 +73,10 @@ return {
       sources = {
         default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
         providers = {
+          snippets = {
+            min_keyword_length = 1, -- don't show when triggered manually, useful for JSON keys
+            score_offset = -1,
+          },
           lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink', score_offset = 100 },
           path = {
             opts = {
